@@ -10,16 +10,14 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRATION_TIME=${JWT_EXPIRATION_TIME}
       - BCRYPT_SALT_ROUNDS=${BCRYPT_SALT_ROUNDS}
-      - FOTO_SOLICITACAO_FOLDER=/fotos
-      - CITIES_JSON_PATH=/cities.json
       - POSTGRES_HOST=${DB_HOST}
-      - POSTGRES_POST=${PG_PORT}
+      - POSTGRES_PORT=${PG_PORT}
       - POSTGRES_USERNAME=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
       - POSTGRES_DATABASE=${DB_NAME}
+      - ROOT=${ROOT}
     volumes:
-      - ${CITIES_JSON_PATH}:/cities.json
-      - ${FOTO_SOLICITACAO_FOLDER}:/fotos
+      - ${ROOT}:/config/minha_cidade
 
   db:
     image: postgres:14
@@ -30,5 +28,5 @@ services:
       - POSTGRES_PASSWORD=${DB_PASS}
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
-      - ${DB_DATA_ROOT}:/var/lib/postgresql/data
+      - ${ROOT}/db:/var/lib/postgresql/data
       - ${HOME}:/_home
