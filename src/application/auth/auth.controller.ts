@@ -37,7 +37,6 @@ export class AuthController {
         return response.send({ data: { ...user, token } });
     }
 
-
     @UseGuards(JwtAuthenticationGuard)
     @Post('log-out')
     async logOut(@Req() _request: RequestWithUser, @Res() response: express.Response) {

@@ -3,6 +3,7 @@ import { Solicitacao } from '../solicitacao/solicitacao';
 
 export enum EUserRole {
     USER = 'USER',
+    BACKOFFICE = 'BACKOFFICE',
     ADMIN = 'ADMIN',
 }
 
@@ -34,6 +35,13 @@ export class User {
     })
     role: EUserRole;
 
+    @Column({
+        type: 'enum',
+        enum: EUserRole,
+        nullable: true,
+    })
+    requestedRole: EUserRole;
+
     @OneToMany(() => Solicitacao, (solicitacao) => solicitacao.createdBy)
     solicitacoes: Solicitacao[];
 }
@@ -45,10 +53,15 @@ const extensions = {
     getById(id: User['id']) {
         return this.findOneBy({ id });
     },
+    async hasAdmin() {
+        const admins = await this.countBy({ role: EUserRole.ADMIN });
+        return admins > 0;
+    }
 }
 
 export abstract class UserRepository extends Repository<User> {
     static extensions = extensions;
     abstract getByEmail(email: User['email']): Promise<User>;
     abstract getById(id: User['id']): Promise<User>;
+    abstract hasAdmin(): Promise<boolean>;
 }

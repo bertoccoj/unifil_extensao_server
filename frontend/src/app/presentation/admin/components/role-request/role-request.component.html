@@ -1,0 +1,10 @@
+<nb-card [nbSpinner]="isLoading$ | async">
+    <nb-card-body>
+        <ng-container *ngIf="(users$ | async) as users">
+            <ngx-role-request-card *ngFor="let user of users" [user]="user" (onDesicionMade)="onDecisionAboutUser(user, $event.accept)"></ngx-role-request-card>
+        </ng-container>
+        <ng-container *ngIf="!(users$ | async)?.length as users">
+            <p>Nenhuma permissão pendente para avaliação</p>
+        </ng-container>
+    </nb-card-body>
+</nb-card>

@@ -2,6 +2,7 @@ import { CacheModule, Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { NestjsFormDataModule } from 'nestjs-form-data';
+import { join } from 'path';
 import { ApplicationModule } from './application/application.module';
 import { CommonModule } from './core/common.module';
 import { Environment } from './core/constants/environment';
@@ -23,6 +24,9 @@ import { InfrastructureModule } from './infrastructure/infrastructure.module';
     ServeStaticModule.forRoot({
       serveRoot: '/static/fotos/solicitacoes',
       rootPath: Environment.fotoSolicitacaoFolder,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../frontend', 'dist'),
     }),
     NestjsFormDataModule,
   ],

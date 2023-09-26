@@ -1,0 +1,5 @@
+<div>
+    <h1>PERMISSÃO INSUFICIENTE</h1>
+    <p>Está página só está disponível para usuários com permissão de: <b>{{ requiredRole }}</b> </p>
+    <button nbButton (click)="requestPermission()" [disabled]="isLoading$ | async">Solicitar permissão</button>
+</div>

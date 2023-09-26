@@ -1,0 +1,19 @@
+<div class="header-container">
+  <div class="logo-container">
+    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle" *ngIf="showMenuToggle">
+      <nb-icon icon="menu-2-outline"></nb-icon>
+    </a>
+    <a class="logo" [routerLink]="['/posts']" routerLinkActive="router-link-active" >Minha Cidade Backoffice</a>
+  </div>
+
+  <nb-actions size="small">
+    <nb-action class="user-action">
+      <nb-user
+        *ngIf="user$ | async as user"
+        [nbContextMenu]="(canViewAdminPannel$ | async) ? adminUserOptions : backofficeUserOptions"
+        nbContextMenuTag="profile-picture-menu"
+        [name]="user.displayName">
+      </nb-user>
+    </nb-action>
+  </nb-actions>
+</div>

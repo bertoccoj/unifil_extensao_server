@@ -1,0 +1,13 @@
+<nb-card>
+    <nb-card-header>
+        <span>{{user.displayName}} | {{user.email}}</span>
+    </nb-card-header>
+    <nb-card-body>
+        <p>Permissão atual: <b>{{ user.role }}</b></p>
+        <p>Permissão solicitada: <b>{{ user.requestedRole }}</b></p>
+        <button nbButton (click)="onDesicionMade.emit({ accept: true })">ACEITAR SOLICITAÇÃO</button>
+        <br status="primary">
+        <br>
+        <button nbButton status="danger" (click)="onDesicionMade.emit({ accept: false })">RECUSAR SOLICITAÇÃO</button>
+    </nb-card-body>
+</nb-card>

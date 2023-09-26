@@ -24,6 +24,7 @@ export class ImportadorDeCidades implements OnApplicationBootstrap {
     ) { }
 
     async onApplicationBootstrap() {
+        return;
         const json = await this.fs.readFromJson<JsonCidades>(Environment.jsonCidades);
         for (const estado of json.provinces) {
             let salvo = await this.estadosRepository.findOneBy({ nome: estado.province_name });

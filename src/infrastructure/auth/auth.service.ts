@@ -1,12 +1,12 @@
-import { EUserRole } from './../../domain/auth/user';
-import { Environment } from '../../core/constants/environment';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UserRepository } from '../../domain/auth/user';
-import { RegisterUserDto } from './models/user-dto';
-import { TokenPayload } from './models/token-payload';
-import bcrypt from 'bcrypt';
-import { PostgresErrorCode } from '../core/postgress-error-code';
 import { JwtService } from '@nestjs/jwt';
+import bcrypt from 'bcrypt';
+import { Environment } from '../../core/constants/environment';
+import { UserRepository } from '../../domain/auth/user';
+import { PostgresErrorCode } from '../core/postgress-error-code';
+import { EUserRole } from './../../domain/auth/user';
+import { TokenPayload } from './models/token-payload';
+import { RegisterUserDto } from './models/user-dto';
 
 @Injectable()
 export class AuthService {
@@ -21,13 +21,13 @@ export class AuthService {
                 registrationData.password,
                 Environment.bcryptSaltRounds,
             );
+            const hasAdmin = await this.userRepository.hasAdmin();
 
             const createdUser = await this.userRepository.save({
                 email: registrationData.email,
                 displayName: registrationData.displayName,
                 password: hashedPassword,
-                // role: hasAdmin ? EUserRole.USER : EUserRole.ADMIN,
-                role: EUserRole.USER,
+                role: hasAdmin ? EUserRole.USER : EUserRole.ADMIN,
             });
 
             delete createdUser.password;
@@ -40,7 +40,6 @@ export class AuthService {
             throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
     async getAuthenticatedUser(email: string, plainTextPassword: string) {
         try {

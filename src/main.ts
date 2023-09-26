@@ -15,9 +15,9 @@ ConsoleWrapper.options = {
 ConsoleWrapper.inject();
 
 async function bootstrap() {
-  console.log(process.env)
   const port = Environment.nestJsPort;
   const app = await NestFactory.create(AppModule, { cors: true });
+  app.setGlobalPrefix('api', { exclude: ['/static/fotos/solicitacoes'] });
   app.use(cookieParser());
   app.enableCors({
     allowedHeaders: [
@@ -36,9 +36,12 @@ async function bootstrap() {
       'User-Agent',
       'Authorization'
     ],
-    origin: ["http://localhost:4200", 'http://192.168.31.87:4200'],
+    origin: [
+      '*',
+    ],
   });
 
+  console.log(port)
   await app.listen(port);
 }
 bootstrap();
