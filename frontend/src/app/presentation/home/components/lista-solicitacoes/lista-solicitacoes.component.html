@@ -1,0 +1,12 @@
+<nb-card [nbSpinner]="isLoadingList$ | async">
+    <nb-card-header>
+        <span>Lista de solicitações</span>
+    </nb-card-header>
+    <nb-card-body>
+        <ng2-smart-table
+            [settings]="tableSettings"
+            [source]="tableDataSourde"
+            (deleteConfirm)="goToTratativaPage($event)">
+        </ng2-smart-table>
+    </nb-card-body>
+</nb-card>

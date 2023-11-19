@@ -1,8 +1,12 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { FormDataRequest } from 'nestjs-form-data';
+import { Solicitacao } from 'src/domain/solicitacao/solicitacao';
+import RequestWithUser from 'src/infrastructure/auth/models/request-with-user';
 import { CriarSolicitacaoPayload } from 'src/infrastructure/solicitacao/models/criar-solicitacao-payload';
 import { FiltroSolicitacao } from 'src/infrastructure/solicitacao/models/filtro-solicitacao';
+import { TratativaPayload } from 'src/infrastructure/solicitacao/models/tratativa';
 import { SolicitacaoService } from 'src/infrastructure/solicitacao/solicitacao.service';
+import BackofficeGuard from '../core/guards/backoffice.guard';
 import JwtAuthenticationGuard from '../core/guards/jwt-authentication.guard';
 
 @UseGuards(JwtAuthenticationGuard)
@@ -15,6 +19,7 @@ export class SolicitacaoController {
 
     @Get()
     list(
+        @Req() request: RequestWithUser,
         @Query('tipo') tipo?: number,
         @Query('status') status?: number,
         @Query('latitude') latitude?: number,
@@ -35,18 +40,30 @@ export class SolicitacaoController {
                 estadoId: (estadoId && Number(estadoId)) ?? null,
                 userId: (userId && Number(userId)) ?? null,
             }),
+            request.user,
         );
     }
 
     @Get(':id')
-    details(@Param('id', ParseIntPipe) id: number) {
-        return this.solicitacaoService.details(id);
+    details(@Param('id', ParseIntPipe) id: number, @Req() request: RequestWithUser) {
+        return this.solicitacaoService.details(id, request.user);
     }
 
     @Post()
     @FormDataRequest()
-    add(@Body() payload: CriarSolicitacaoPayload) {
-        return this.solicitacaoService.add(payload);
+    add(@Body() payload: CriarSolicitacaoPayload, @Req() request: RequestWithUser) {
+        return this.solicitacaoService.add(payload, request.user);
+    }
+
+    @Post('tratativa/:id')
+    @UseGuards(BackofficeGuard)
+    addTratativa(@Body() payload: TratativaPayload, @Param('id') id: Solicitacao['id'], @Req() { user }: RequestWithUser) {
+        return this.solicitacaoService.addtratativa(id, payload, user);
+    }
+
+    @Post('watch/:id')
+    watcj(@Body() payload: { token: string }, @Param('id') id: Solicitacao['id'], @Req() { user }: RequestWithUser) {
+        return this.solicitacaoService.watch(id, user, payload.token);
     }
 
 }

@@ -12,17 +12,7 @@ export class HomeComponent {
         {
             title: 'Solicitações',
             icon: 'archive',
-            children: [
-                // {
-                //   title: 'Queues',
-                //   url: Environment.getApiUrl('admin', 'queues'),
-                //   target: '_blank'
-                // }
-                //     {
-                //       title: 'Settings',
-                //       link: '/admin/library/settings',
-                //     },
-            ]
+            link: '/home/solicitacoes'
         },
     ];
 

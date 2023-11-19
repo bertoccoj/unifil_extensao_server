@@ -10,6 +10,7 @@ import { JwtStrategy } from './auth/strategies/jwt.strategy';
 import { LocalStrategy } from './auth/strategies/local.strategy';
 import { Geocoder } from './core/geocoder.service';
 import { ImportadorDeCidades } from './core/importador-de-cidades';
+import { PushService } from './core/push.service';
 import { SolicitacaoService } from './solicitacao/solicitacao.service';
 import { UsersFacadeImpl } from './users/users-facade-impl';
 
@@ -20,6 +21,7 @@ const providers: Provider[] = [
     SolicitacaoService,
     Geocoder,
     ImportadorDeCidades,
+    PushService,
     {
         provide: IUsersFacade,
         useClass: UsersFacadeImpl,

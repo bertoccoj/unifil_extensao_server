@@ -1,0 +1,15 @@
+<h6 *ngIf="param?.label as label">{{ label }}</h6>
+<nb-select
+    fullWidth
+    [placeholder]="param?.placeholder ?? 'select'"
+    [selected]="value"
+    (selectedChange)="onChange($event)">
+    <nb-select-label>
+        {{ value?.label }}
+    </nb-select-label>
+
+    <nb-option *ngFor="let config of param.options" [value]="config">
+        {{ config.label }}
+    </nb-option>
+</nb-select>
+<br><br>

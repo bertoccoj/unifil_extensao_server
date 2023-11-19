@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Repository, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, Repository, UpdateDateColumn } from 'typeorm';
 import { Solicitacao } from '../solicitacao/solicitacao';
+import { TratativaSolicitacao } from '../solicitacao/tratativa';
 
 export enum EUserRole {
     USER = 'USER',
@@ -44,6 +45,15 @@ export class User {
 
     @OneToMany(() => Solicitacao, (solicitacao) => solicitacao.createdBy)
     solicitacoes: Solicitacao[];
+
+    @OneToMany(() => TratativaSolicitacao, (tratativa) => tratativa.solicitacao)
+    tratativas: TratativaSolicitacao[];
+
+    @ManyToMany(() => Solicitacao, (solicitacao) => solicitacao.usuariosAcompanhando)
+    acompanhando: Solicitacao[];
+
+    @Column('text', { nullable: true })
+    fcmToken: string;
 }
 
 const extensions = {

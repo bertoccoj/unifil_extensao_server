@@ -1,8 +1,8 @@
 import { User } from 'src/domain/auth/user';
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, Repository, UpdateDateColumn } from 'typeorm';
-// import { Bairro } from '../localizacao/bairro';
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, Repository, UpdateDateColumn } from 'typeorm';
 import { Cidade } from '../localizacao/cidade';
 import { Estado } from '../localizacao/estado';
+import { TratativaSolicitacao } from './tratativa';
 
 export enum ETipoSolicitacao {
     buraco = 1,
@@ -72,6 +72,14 @@ export class Solicitacao {
         nullable: true,
     })
     createdBy: User;
+
+    @OneToMany(() => TratativaSolicitacao, (tratativa) => tratativa.solicitacao)
+    @JoinTable()
+    tratativas: TratativaSolicitacao[];
+
+    @ManyToMany(() => User, (user) => user.acompanhando)
+    @JoinTable()
+    usuariosAcompanhando: User[]
 }
 
 export abstract class SolicitacaoRepository extends Repository<Solicitacao> { }

@@ -1,0 +1,98 @@
+<nb-card [nbSpinner]="isLoadingTratativa$ | async">
+    <nb-card-body>
+        <nb-card [nbSpinner]="isLoadingDetails$ | async">
+            <nb-card-header><h5>Informações Gerais</h5></nb-card-header>
+            <ng-container *ngIf="details$ | async as details">
+                <nb-card-body >
+                    <div class="body">
+                        <div class="info">
+                            <p>Tipo: <b>{{getTipoText(details.tipo)}}</b></p>
+                            <p>Status: <b>{{getStatusText(details.status)}}</b></p>
+                            <p>Descrição: <b>{{details.descricao}}</b></p>
+                            <br>
+                            <p *ngIf="details.dataPrevistaReparo as data">Data prevista reparo <b>{{data | date:'dd/MM/yyyy HH:mm'}}</b></p>
+                        </div>
+                        <div class="foto">
+                            <img [src]="getFotoUrl(details)">
+                        </div>
+                    </div>
+                </nb-card-body>
+            </ng-container>
+        </nb-card>
+        
+        <nb-card [nbSpinner]="isLoadingDetails$ | async">
+            <nb-card-header><h5>Localização</h5></nb-card-header>
+            <ng-container *ngIf="details$ | async as details">
+                <nb-card-body >
+                    <p>Latitude: <b>{{details.latitude}}</b></p>
+                    <p>Longitude: <b>{{details.longitude}}</b></p>
+                    <p>Cidade: <b>{{details.cidade.nome}}</b></p>
+                    <p>Estado: <b>{{details.estado.nome}}</b></p>
+                </nb-card-body>
+            </ng-container>
+        </nb-card>
+        
+        <ng-container *ngIf="(details$ | async)?.status < 2">
+            <nb-card [nbSpinner]="isLoadingDetails$ | async">
+                <nb-card-header><h5>Adicionar tratativa</h5></nb-card-header>
+                <ng-container *ngIf="details$ | async as details">
+                    <nb-card-body>
+                        <ngx-select [param]="getSelectParamStatus(details.status)" [(value)]="novoStatus"></ngx-select>
+                        <div class="input">
+                            <h6>Mensagem</h6>
+                                <input 
+                                    #input
+                                    type="text"
+                                    nbInput
+                                    fullWidth
+                                    fieldSize="large"
+                                    placeholder="Mensagem"
+                                    [(ngModel)]="mensagem">
+                        </div>
+        
+                        <br>
+                        <h6>Data prevista reparo</h6>
+                        <input nbInput
+                            
+                            [(ngModel)]="dataReparo"
+                            [contentEditable]="false"
+                            [nbDatepicker]="datePicker">
+                        <nb-datepicker #datePicker></nb-datepicker>
+                        <br>
+                        <br>
+        
+                        <button nbButton (click)="addTratativa(details)" [disabled]="!valid()">Adicionar Tratativa</button>
+        
+                        <br>
+                    </nb-card-body>
+                </ng-container>
+            </nb-card>
+        </ng-container>
+        
+        
+        <nb-card [nbSpinner]="isLoadingDetails$ | async">
+            <nb-card-header><h5>Histórico de tratativas</h5></nb-card-header>
+            <ng-container *ngIf="details$ | async as details">
+                <nb-card-body *ngIf="details.tratativas.length">
+                    <div *ngFor="let tratativa of details.tratativas">
+                        <p>Data: <b>{{tratativa.createdAt | date:'dd/MM/yyyy HH:mm'}}</b></p>
+                        <p>Responsável: <b>{{tratativa.responsavel.displayName}}</b></p>
+                        <p>Status anterior: <b>{{getStatusText(tratativa.statusAnterior)}}</b></p>
+                        <p>Status Posterior: <b>{{getStatusText(tratativa.novoStatus)}}</b></p>
+                        <p *ngIf="tratativa.dataReparo as data">Data reparo adicionada: <b>{{data | date:'dd/MM/yyyy HH:mm'}}</b></p>
+                        <br>
+                        <p>Mensagem: <b>{{tratativa.mensagem}}</b></p>
+        
+                        <div class="divider"></div>
+                        <br>
+                    </div>
+                </nb-card-body>
+        
+                <nb-card-body *ngIf="!details.tratativas.length">
+                    Sem tratativas até o momento
+                </nb-card-body>
+            </ng-container>
+        </nb-card>
+        
+    </nb-card-body>
+</nb-card>
