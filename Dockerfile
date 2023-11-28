@@ -14,7 +14,7 @@ RUN yarn build
 COPY ./dist .
 
 # expoe a porta
-EXPOSE 3233
+EXPOSE 3356
 
 # executa
 WORKDIR /usr/src/app

@@ -3,7 +3,7 @@ version: '3.1'
 services:
   minha_cidade:
     ports:
-      - '3233:3233'
+      - '3233:3356'
     restart: always
     image: 'minha_cidade:latest'
     environment:
