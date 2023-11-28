@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { User, UserRepository } from 'src/domain';
+import { User, UserRepository, rolePriority } from 'src/domain';
 import { IUsersFacade } from 'src/domain/users/i_users_facade';
 import { RequestRolePayload } from 'src/domain/users/request-role';
 import { IsNull, Not } from 'typeorm';
@@ -56,7 +56,10 @@ export class UsersFacadeImpl implements IUsersFacade {
         if (user.requestedRole) {
             throw new BadRequestException(ERequestRoleError.PERMISSION_PENDING)
         }
-        if (user.role >= payload.role) {
+        const currentRolse = rolePriority.indexOf(user.role);
+        const requestedRole = rolePriority.indexOf(payload.role);
+        const isCurrentRoleHigherOrEqual = currentRolse >= requestedRole;
+        if (isCurrentRoleHigherOrEqual) {
             throw new BadRequestException(ERequestRoleError.ROLE_MUST_BE_HIGHER_THAN_CURRENT);
         }
 

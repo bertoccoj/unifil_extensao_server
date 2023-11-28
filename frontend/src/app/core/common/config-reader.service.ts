@@ -14,6 +14,10 @@ export class Environment {
     return this.apiUrl + content.join('/');
   }
 
+  static getStaticUrl(...content: (string | number)[]) {
+    return '/static/' + content.join('/');
+  }
+
   static getPlainUrl(...content: (string | number)[]) {
     return '/' + content.join('/');
   }

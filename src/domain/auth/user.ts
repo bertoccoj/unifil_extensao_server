@@ -8,6 +8,12 @@ export enum EUserRole {
     ADMIN = 'ADMIN',
 }
 
+export const rolePriority = [
+    EUserRole.USER,
+    EUserRole.BACKOFFICE,
+    EUserRole.ADMIN,
+];
+
 @Entity()
 export class User {
 

@@ -50,8 +50,8 @@ export class TratativaComponent implements OnInit {
   }
 
   getFotoUrl(details: Solicitacao) {
-    return Environment.getApiUrl(
-      'static', 'fotos', 'solicitacoes', `${details.id}.${details.extensaoArquivo}`,
+    return Environment.getStaticUrl(
+      'fotos', 'solicitacoes', `${details.id}.${details.extensaoArquivo}`,
     )
   }
 

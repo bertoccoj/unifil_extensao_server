@@ -32,7 +32,7 @@
             </ng-container>
         </nb-card>
         
-        <ng-container *ngIf="(details$ | async)?.status < 2">
+        <ng-container *ngIf="(details$ | async)?.status <= 2">
             <nb-card [nbSpinner]="isLoadingDetails$ | async">
                 <nb-card-header><h5>Adicionar tratativa</h5></nb-card-header>
                 <ng-container *ngIf="details$ | async as details">
